@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🐱 12A4 - THPT Lê Quý Đôn 🐱</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff5f7, #e8f4ff);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            transition: background 0.4s ease, color 0.2s ease;
+            min-height: 100vh;
+            /* === CUSTOM CURSOR HÌNH MÈO === */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, auto;
+        }
+
+        /* Đảm bảo khi hover lên các phần tử click được, cursor vẫn giữ nguyên hình mèo */
+        a, button, .menu-tabs a, .menu-tabs .menu-item, .gallery-item, .member-card, .insta-btn, .logout-btn, .color-option, .lang-selector span, .toggle-switch, .login-card button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+        }
+
+        /* ========== DARK MODE GLOBAL ========== */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f0c1f, #1a1a2e) !important;
+            color: #f1f5f9;
+        }
+        body.dark-mode .glass-card,
+        body.dark-mode .menu-tabs,
+        body.dark-mode .intro,
+        body.dark-mode .teacher-info,
+        body.dark-mode .member-card,
+        body.dark-mode .gallery-item,
+        body.dark-mode .settings-card,
+        body.dark-mode .login-card {
+            background: rgba(20, 20, 40, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #f0f0f0;
+        }
+        body.dark-mode .menu-tabs a,
+        body.dark-mode .menu-tabs .menu-item {
+            color: #ffb7c5;
+        }
+        body.dark-mode .menu-tabs a:hover {
+            background: #ff8fab;
+            color: white;
+        }
+        body.dark-mode .countdown {
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffb7c5;
+        }
+        body.dark-mode .member-card .role {
+            color: #cbd5e1;
+        }
+        body.dark-mode footer {
+            background: #0a0a1a;
+        }
+        body.dark-mode .insta-btn {
+            background: radial-gradient(circle at 30% 110%, #ffdb7e, #ff9a5a, #d6249f);
+        }
+
+        /* ========== UTILITY CLASSES ========== */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffe0e7;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff8fab;
+            border-radius: 10px;
+        }
+        body.dark-mode ::-webkit-scrollbar-track {
+            background: #2d2d44;
+        }
+
+        /* ========== MENU TABS ========== */
+        .menu-tabs {
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            padding: 10px 24px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            border-radius: 80px;
+            margin: 16px 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .menu-tabs a, .menu-tabs .menu-item {
+            font-weight: 600;
+            color: #ff6f91;
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+        }
+        .menu-tabs a:hover, .menu-tabs .menu-item:hover {
+            background: #ff8fab;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .user-info {
+            background: #ff8fab;
+            color: white;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 18px 5px 12px;
+        }
+        .logout-btn {
+            background: rgba(255,255,255,0.25);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            transition: 0.2s;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+        }
+        .logout-btn:hover {
+            background: white;
+            color: #ff4d6d;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            background: linear-gradient(135deg, #ff9eb5, #ff6f91);
+            color: white;
+            padding: 48px 24px;
+            text-align: center;
+            border-radius: 60px;
+            margin: 24px 24px 40px;
+            box-shadow: 0 25px 40px rgba(255, 105, 180, 0.25);
+        }
+        header h1 {
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+        }
+        .countdown {
+            background: rgba(255,235,240,0.9);
+            border-radius: 60px;
+            padding: 10px 28px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 20px;
+            font-size: 1rem;
+            backdrop-filter: blur(4px);
+            color: #c8102e;
+        }
+
+        /* ========== INTRO & TEACHER ========== */
+        .intro {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            margin: 24px 24px;
+            padding: 32px;
+            border-radius: 56px;
+            text-align: center;
+        }
+        .teacher-info {
+            background: #ffeef4;
+            border-radius: 60px;
+            padding: 24px 40px;
+            margin: 24px auto;
+            width: fit-content;
+            max-width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+            font-weight: 500;
+        }
+        .teacher-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ff8fab;
+            transition: 0.3s;
+        }
+        .teacher-avatar:hover {
+            transform: scale(1.02);
+            border-color: #ff4d6d;
+        }
+
+        /* ========== GALLERY & MEMBERS ========== */
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin: 48px 0 24px;
+            color: #ff6f91;
+            font-weight: 700;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            padding: 0 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.12);
+            transition: all 0.4s cubic-bezier(0.2,0.9,0.4,1.1);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+            background: #fff;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 28px 40px rgba(255, 80, 120, 0.3);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+            width: 100%;
+            padding: 16px;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+
+        .members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            padding: 24px;
+        }
+        .member-card {
+            background: white;
+            width: 200px;
+            padding: 24px 16px;
+            border-radius: 48px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+        }
+        .member-card:hover {
+            transform: translateY(-12px) rotate(1deg);
+            background: #fffafc;
+            box-shadow: 0 25px 35px rgba(255, 100, 150, 0.25);
+        }
+        .member-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffb7c5;
+            transition: 0.3s;
+        }
+        .member-card:hover img {
+            border-color: #ff4d6d;
+            transform: scale(1.03);
+        }
+        .member-card p {
+            margin-top: 16px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #ff5e8a;
+        }
+        .member-card .role {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* ========== FLOATING HEARTS ========== */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 1.6rem;
+            animation: floatUp 3.5s linear forwards;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ========== INSTAGRAM BUTTON ========== */
+        .insta-btn {
+            display: inline-block;
+            background: radial-gradient(circle at 30% 110%, #ffdb7e, #ff9a5a, #d6249f);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            margin: 20px 0 30px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+        }
+        .insta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 28px rgba(214, 36, 159, 0.3);
+        }
+
+        /* ========== MUSIC CONTROL ========== */
+        #music-control {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(255, 77, 109, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 8px 18px;
+            border-radius: 50px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        #music-control button {
+            background: white;
+            border: none;
+            font-size: 1.2rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+            color: #ff4d6d;
+        }
+
+        /* ========== LIGHTBOX ========== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 32px;
+            box-shadow: 0 0 40px rgba(255,255,255,0.2);
+        }
+        .close-lightbox {
+            position: absolute;
+            top: 28px;
+            right: 32px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* ========== LOGIN SCREEN PREMIUM ========== */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fce7f3, #e0f2fe);
+            backdrop-filter: blur(4px);
+            z-index: 20000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        body.dark-mode .login-screen {
+            background: linear-gradient(135deg, #1a1a2e, #0f0c1f);
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 56px;
+            width: 90%;
+            max-width: 460px;
+            padding: 48px 36px;
+            text-align: center;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+        }
+        .login-card h2 {
+            color: #ff6f91;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+        .login-card p {
+            color: #5a5a72;
+            margin-bottom: 28px;
+        }
+        .login-card input {
+            width: 100%;
+            padding: 14px 22px;
+            margin: 12px 0;
+            border: 2px solid #ffe0e7;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: white;
+            transition: 0.2s;
+        }
+        .login-card input:focus {
+            border-color: #ff8fab;
+            outline: none;
+        }
+        .login-card button {
+            background: #ff8fab;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .login-card button:hover {
+            background: #ff6f91;
+            transform: scale(1.02);
+        }
+        .login-message {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: #ff4d6d;
+        }
+        .lang-selector {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .lang-selector span {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+            padding: 6px 16px;
+            border-radius: 40px;
+            background: #f0f0f0;
+            transition: 0.2s;
+        }
+        .lang-selector span.active {
+            background: #ff8fab;
+            color: white;
+        }
+        /* Theme toggle on login screen */
+        .login-theme-toggle {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        .login-theme-toggle .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+        .login-theme-toggle .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .login-theme-toggle .slider {
+            position: absolute;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        .login-theme-toggle .slider:before {
+            position: absolute;
+            content: "☀️";
+            height: 22px;
+            width: 22px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .login-theme-toggle input:checked + .slider {
+            background-color: #ff8fab;
+        }
+        .login-theme-toggle input:checked + .slider:before {
+            content: "🌙";
+            transform: translateX(26px);
+        }
+
+        /* ========== SETTINGS PAGE ========== */
+        .settings-page {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .settings-card {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 32px;
+            margin-bottom: 28px;
+        }
+        .settings-card h3 {
+            color: #ff6f91;
+            margin-bottom: 24px;
+            font-size: 1.6rem;
+        }
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        .color-palette {
+            display: flex;
+            gap: 14px;
+        }
+        .color-option {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .color-option.active {
+            border-color: #ff4d6d;
+            transform: scale(1.08);
+        }
+        .language-select {
+            padding: 8px 18px;
+            border-radius: 40px;
+            border: 1px solid #ffb7c5;
+            background: white;
+            font-size: 0.9rem;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="%23ffcc00" stroke="%23333" stroke-width="1.5"/><circle cx="11" cy="12" r="2" fill="%23333"/><circle cx="21" cy="12" r="2" fill="%23333"/><path d="M12 20 Q16 24 20 20" stroke="%23333" stroke-width="2" fill="none"/><path d="M8 8 L5 5 M24 8 L27 5" stroke="%23333" stroke-width="2" stroke-linecap="round"/><path d="M16 6 L16 3" stroke="%23333" stroke-width="2" stroke-linecap="round"/></svg>') 16 16, pointer;
+        }
+
+        /* ========== PROTECTED CONTENT ========== */
+        .protected-content {
+            display: none;
+        }
+        .protected-content.show {
+            display: block;
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .fade-up.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        footer {
+            background: #ff8fab;
+            color: white;
+            text-align: center;
+            padding: 28px;
+            border-radius: 40px 40px 0 0;
+            margin-top: 60px;
+        }
+        @media (max-width: 650px) {
+            .menu-tabs a, .menu-tabs .menu-item { padding: 6px 14px; font-size: 0.75rem; }
+            header h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN with theme toggle -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <h2><i class="fas fa-heart"></i> <span data-i18n="login_title">12A4</span></h2>
+        <p data-i18n="login_desc">Nhập mật khẩu để vào lớp nhé!</p>
+        <input type="text" id="loginUsername" placeholder="Tên của bạn" autocomplete="off">
+        <input type="password" id="loginPassword" placeholder="Mật khẩu" autocomplete="off">
+        <button id="doLoginBtn" data-i18n="login_btn">Đăng nhập</button>
+        <div id="loginError" class="login-message"></div>
+        <div class="lang-selector">
+            <span class="lang-vi active" onclick="setLoginLanguage('vi')">🇻🇳 Tiếng Việt</span>
+            <span class="lang-en" onclick="setLoginLanguage('en')">🇬🇧 English</span>
+        </div>
+        <div class="login-theme-toggle">
+            <span style="margin-right: 8px;">🌙</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="loginDarkToggle">
+                <span class="slider"></span>
+            </label>
+            <span style="margin-left: 8px;">☀️</span>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="protectedContent" class="protected-content">
+    <div class="menu-tabs">
+        <a href="#" data-page="home"><i class="fas fa-home"></i> <span data-i18n="menu_home">Trang chủ</span></a>
+        <a href="#" data-page="gallery"><i class="fas fa-images"></i> <span data-i18n="menu_gallery">Khoảnh khắc</span></a>
+        <a href="#" data-page="members"><i class="fas fa-users"></i> <span data-i18n="menu_members">Thành viên</span></a>
+        <a href="https://www.facebook.com/anh.tuyet.850078" target="_blank"><i class="fab fa-facebook"></i> Facebook Tuyết</a>
+        <a href="https://www.facebook.com/quockhoa208/" target="_blank"><i class="fab fa-facebook"></i> Facebook Khoa</a>
+        <a href="https://c3lequydon.daklak.edu.vn/" target="_blank"><i class="fas fa-school"></i> <span data-i18n="menu_school">Website trường</span></a>
+        <a href="#" data-page="settings"><i class="fas fa-cog"></i> <span data-i18n="menu_settings">Cài đặt</span></a>
+        <div id="userInfoMenu" class="menu-item"></div>
+    </div>
+
+    <!-- HOME -->
+    <div id="homePage" class="page-content">
+        <header>
+            <h1>🌸 <span data-i18n="header_title">LỚP 12A4 - THPT LÊ QUÝ ĐÔN</span> 🌸</h1>
+            <div class="countdown" id="countdownTimer"></div>
+        </header>
+        <div class="intro fade-up">
+            <p data-i18n="intro_line1">✨ Chào mừng đến với ngôi nhà thứ hai của chúng mình! ✨</p>
+            <p data-i18n="intro_line2">🏫 Trường THPT Lê Quý Đôn - Lớp 12A4 với <strong>45 học sinh</strong> và thầy chủ nhiệm <strong>Nguyễn Phương Huy</strong> 💗</p>
+            <p data-i18n="intro_line3">🎉 Tập thể đoàn kết - Vui vẻ - Bùng cháy thanh xuân! 🎉</p>
+            <p data-i18n="intro_line4">📸 Những khoảnh khắc đẹp nhất, lưu giữ mãi tuổi 18.</p>
+        </div>
+        <div class="teacher-info fade-up">
+            <img class="teacher-avatar" src="657351802_2223808961711423_1104204301893439490_n.jpg" alt="Thầy Nguyễn Phương Huy">
+            <div class="teacher-details">
+                <p><i class="fas fa-chalkboard-teacher"></i> <strong data-i18n="teacher_name">Thầy chủ nhiệm: Nguyễn Phương Huy</strong></p>
+                <p><i class="fas fa-users"></i> <span data-i18n="teacher_students">Sĩ số: <strong>45 học sinh</strong></span></p>
+                <p><i class="fas fa-heart" style="color:#ff4d6d;"></i> <span data-i18n="teacher_desc">Người dẫn dắt yêu thương</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div id="galleryPage" class="page-content" style="display: none;">
+        <h2 class="section-title fade-up"><i class="fas fa-camera-retro"></i> <span data-i18n="gallery_title">KHOẢNH KHẮC ĐẸP NHẤT</span></h2>
+        <div class="gallery">
+            <div class="gallery-item"><img src="z7662010123400_a6ce16e5bf683da7e8acae183401240e.jpg"><div class="gallery-caption">💖 Ngày hội thể thao</div></div>
+            <div class="gallery-item"><img src="z7662010108022_ab3c78f6bae3ecbebf78f34031214c61.jpg"><div class="gallery-caption">📸 Chuyến đi chơi</div></div>
+            <div class="gallery-item"><img src="z7662010111298_757dcf60c1c98e858d3366eaef4462a3.jpg"><div class="gallery-caption">🎂 Khoảnh khắc đáng yêu</div></div>
+            <div class="gallery-item"><img src="z7662010111454_3a5a96bccb743b3ca103327db2ce5570.jpg"><div class="gallery-caption">🏆 Lễ hội</div></div>
+            <div class="gallery-item"><img src="z7662010113095_022a1f30f4bba7a99a0d4c3a17373338.jpg"><div class="gallery-caption">🌈 Khoảnh khắc tự do</div></div>
+            <div class="gallery-item"><img src="z7669219127563_61bec4a64e60f3c292a3eb831515312e.jpg"><div class="gallery-caption">💪 Nghỉ tích cực, học chăm ngoan</div></div>
+            <div class="gallery-item"><img src="z7669219127935_0c9432636909ff6c2e1e91738e31d011.jpg"><div class="gallery-caption">📖 Dạy tốt - Học tốt</div></div>
+            <div class="gallery-item"><img src="z7669219135156_4b8f1f384b42b0d7193a6e01774ff873.jpg"><div class="gallery-caption">🍵 MIXUE - Ngọt ngào</div></div>
+            <div class="gallery-item"><img src="z7669219135482_14a2d46ccb4e4ee3f999a948f80f8201.jpg"><div class="gallery-caption">⚖️ Gia đình nhỏ</div></div>
+        </div>
+    </div>
+
+    <!-- MEMBERS -->
+    <div id="membersPage" class="page-content" style="display: none;">
+        <h2 class="section-title fade-up"><i class="fas fa-star"></i> <span data-i18n="members_title">THÀNH VIÊN ĐÁNG YÊU</span></h2>
+        <div class="members">
+            <div class="member-card"><img src="z7669152137991_8930cbe5c1d86486beb671b31e76e570.jpg"><p>Khoa 😎</p><div class="role" data-i18n="role_khoa">Cây hài lớp</div></div>
+            <div class="member-card"><img src="z7662010108022_ab3c78f6bae3ecbebf78f34031214c61.jpg"><p>Lớp Mình 💕</p><div class="role" data-i18n="role_class">Lớp 12A4 mãi yêu</div></div>
+            <div class="member-card"><img src="z7662010113095_022a1f30f4bba7a99a0d4c3a17373338.jpg"><p>Best Team 🔥</p><div class="role" data-i18n="role_team">Ban cán sự</div></div>
+            <div class="member-card"><img src="z7669157781385_0ea63ec37ad9131dd56f9718fc1d9ccd.jpg"><p>Tuyết 🌸</p><div class="role" data-i18n="role_tuyet">Hoa khôi lớp</div></div>
+        </div>
+        <div style="text-align:center;">
+            <a href="https://www.instagram.com/_princess__.a4?igsh=MW40b2IyMjZscjM0cA==" target="_blank" class="insta-btn"><i class="fab fa-instagram"></i> <span data-i18n="instagram_follow">Follow Instagram 12A4</span></a>
+        </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settingsPage" class="page-content" style="display: none;">
+        <div class="settings-page">
+            <div class="settings-card">
+                <h3><i class="fas fa-language"></i> <span data-i18n="settings_language">Ngôn ngữ</span></h3>
+                <div class="setting-item">
+                    <span class="setting-label" data-i18n="settings_language_label">Chọn ngôn ngữ</span>
+                    <select id="languageSelect" class="language-select">
+                        <option value="vi">🇻🇳 Tiếng Việt</option>
+                        <option value="en">🇬🇧 English</option>
+                    </select>
+                </div>
+            </div>
+            <div class="settings-card">
+                <h3><i class="fas fa-palette"></i> <span data-i18n="settings_background">Màu nền</span></h3>
+                <div class="setting-item">
+                    <span class="setting-label" data-i18n="settings_background_label">Chọn màu nền yêu thích</span>
+                    <div class="color-palette" id="colorPalette">
+                        <div class="color-option" style="background: linear-gradient(135deg, #fff5f7, #e8f4ff);" data-color="default"></div>
+                        <div class="color-option" style="background: linear-gradient(135deg, #ffe6f0, #c8e7f5);" data-color="pastel"></div>
+                        <div class="color-option" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);" data-color="sunset"></div>
+                        <div class="color-option" style="background: linear-gradient(135deg, #a1c4fd, #c2e9fb);" data-color="ocean"></div>
+                        <div class="color-option" style="background: linear-gradient(135deg, #d4fc79, #96e6a1);" data-color="fresh"></div>
+                        <div class="color-option" style="background: linear-gradient(135deg, #fbc2eb, #a6c1ee);" data-color="dreamy"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Made with <i class="fas fa-heart" style="color:#ffd966;"></i> by 12A4 - THPT Lê Quý Đôn | 2026<br>
+        <span data-i18n="footer_motto">"Mãi là những mảnh ghép không thể thay thế"</span>
+    </footer>
+</div>
+
+<audio id="bg-music" loop preload="auto"><source src="Nhạc nền.mp3" type="audio/mpeg"></audio>
+<div id="music-control"><button id="playPauseBtn"><i class="fas fa-play"></i></button><i class="fas fa-volume-up"></i><input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5"></div>
+<div id="lightbox" class="lightbox"><span class="close-lightbox">&times;</span><img id="lightbox-img" src=""></div>
+
+<script>
+    // ========== I18N DICTIONARY ==========
+    const translations = {
+        vi: {
+            login_title: "12A4", login_desc: "Nhập mật khẩu để vào lớp nhé!", login_btn: "Đăng nhập",
+            menu_home: "Trang chủ", menu_gallery: "Khoảnh khắc", menu_members: "Thành viên", menu_school: "Website trường", menu_settings: "Cài đặt",
+            header_title: "LỚP 12A4 - THPT LÊ QUÝ ĐÔN",
+            intro_line1: "✨ Chào mừng đến với ngôi nhà thứ hai của chúng mình! ✨",
+            intro_line2: "🏫 Trường THPT Lê Quý Đôn - Lớp 12A4 với 45 học sinh và thầy chủ nhiệm Nguyễn Phương Huy 💗",
+            intro_line3: "🎉 Tập thể đoàn kết - Vui vẻ - Bùng cháy thanh xuân! 🎉",
+            intro_line4: "📸 Những khoảnh khắc đẹp nhất, lưu giữ mãi tuổi 18.",
+            teacher_name: "Thầy chủ nhiệm: Nguyễn Phương Huy", teacher_students: "Sĩ số: 45 học sinh", teacher_desc: "Người dẫn dắt yêu thương",
+            gallery_title: "KHOẢNH KHẮC ĐẸP NHẤT", members_title: "THÀNH VIÊN ĐÁNG YÊU",
+            role_khoa: "Cây hài lớp", role_class: "Lớp 12A4 mãi yêu", role_team: "Ban cán sự", role_tuyet: "Hoa khôi lớp",
+            instagram_follow: "Follow Instagram 12A4",
+            settings_language: "Ngôn ngữ", settings_language_label: "Chọn ngôn ngữ", settings_background: "Màu nền", settings_background_label: "Chọn màu nền yêu thích",
+            footer_motto: "\"Mãi là những mảnh ghép không thể thay thế\""
+        },
+        en: {
+            login_title: "12A4", login_desc: "Enter password to enter the class!", login_btn: "Login",
+            menu_home: "Home", menu_gallery: "Moments", menu_members: "Members", menu_school: "School Website", menu_settings: "Settings",
+            header_title: "CLASS 12A4 - LE QUY DON HIGH SCHOOL",
+            intro_line1: "✨ Welcome to our second home! ✨",
+            intro_line2: "🏫 Le Quy Don High School - Class 12A4 with 45 students and homeroom teacher Nguyen Phuong Huy 💗",
+            intro_line3: "🎉 United - Joyful - Passionate youth! 🎉",
+            intro_line4: "📸 The most beautiful moments, forever memories of 18.",
+            teacher_name: "Homeroom teacher: Nguyen Phuong Huy", teacher_students: "Total: 45 students", teacher_desc: "Loving guide",
+            gallery_title: "BEAUTIFUL MOMENTS", members_title: "LOVELY MEMBERS",
+            role_khoa: "Class clown", role_class: "Class 12A4 forever", role_team: "Class committee", role_tuyet: "Class beauty",
+            instagram_follow: "Follow 12A4 Instagram",
+            settings_language: "Language", settings_language_label: "Choose language", settings_background: "Background color", settings_background_label: "Choose your favorite background",
+            footer_motto: "\"Forever irreplaceable pieces\""
+        }
+    };
+    let currentLang = localStorage.getItem('app_lang') || 'vi';
+    function applyLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('app_lang', lang);
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang][key]) el.innerHTML = translations[lang][key];
+        });
+        document.getElementById('languageSelect').value = lang;
+        document.querySelectorAll('.lang-selector span').forEach(span => {
+            span.classList.remove('active');
+            if ((lang === 'vi' && span.classList.contains('lang-vi')) || (lang === 'en' && span.classList.contains('lang-en'))) span.classList.add('active');
+        });
+    }
+    function setLoginLanguage(lang) { applyLanguage(lang); }
+
+    // ========== DARK MODE GLOBAL ==========
+    const loginDarkToggle = document.getElementById('loginDarkToggle');
+    function applyDarkModeGlobal(isDark) {
+        if (isDark) document.body.classList.add('dark-mode');
+        else document.body.classList.remove('dark-mode');
+        localStorage.setItem('dark_mode', isDark);
+        if (loginDarkToggle) loginDarkToggle.checked = isDark;
+    }
+    function initDarkMode() { applyDarkModeGlobal(localStorage.getItem('dark_mode') === 'true'); }
+    if (loginDarkToggle) loginDarkToggle.addEventListener('change', (e) => applyDarkModeGlobal(e.target.checked));
+
+    // ========== BACKGROUND COLOR ==========
+    const backgrounds = {
+        default: "linear-gradient(135deg, #fff5f7, #e8f4ff)",
+        pastel: "linear-gradient(135deg, #ffe6f0, #c8e7f5)",
+        sunset: "linear-gradient(135deg, #ffecd2, #fcb69f)",
+        ocean: "linear-gradient(135deg, #a1c4fd, #c2e9fb)",
+        fresh: "linear-gradient(135deg, #d4fc79, #96e6a1)",
+        dreamy: "linear-gradient(135deg, #fbc2eb, #a6c1ee)"
+    };
+    function applyBackgroundColor(colorKey) {
+        if (!document.body.classList.contains('dark-mode')) {
+            if (backgrounds[colorKey]) document.body.style.background = backgrounds[colorKey];
+            else document.body.style.background = backgrounds.default;
+        }
+        localStorage.setItem('bg_color', colorKey);
+        document.querySelectorAll('.color-option').forEach(opt => {
+            opt.classList.remove('active');
+            if (opt.getAttribute('data-color') === colorKey) opt.classList.add('active');
+        });
+    }
+    document.querySelectorAll('.color-option').forEach(opt => {
+        opt.addEventListener('click', () => applyBackgroundColor(opt.getAttribute('data-color')));
+    });
+    function initBgColor() { applyBackgroundColor(localStorage.getItem('bg_color') || 'default'); }
+
+    // ========== LOGIN SYSTEM ==========
+    const loginScreenDiv = document.getElementById('loginScreen');
+    const protectedDiv = document.getElementById('protectedContent');
+    const loginBtn = document.getElementById('doLoginBtn');
+    const loginErrorSpan = document.getElementById('loginError');
+    const userInfoMenuSpan = document.getElementById('userInfoMenu');
+    const usernameField = document.getElementById('loginUsername');
+    const passwordField = document.getElementById('loginPassword');
+
+    function checkLogin() {
+        if (sessionStorage.getItem('class12a4_logged') === 'true' && sessionStorage.getItem('class12a4_username')) {
+            showMainContent(sessionStorage.getItem('class12a4_username'));
+        } else {
+            showLoginScreen();
+        }
+    }
+    function showMainContent(username) {
+        loginScreenDiv.style.display = 'none';
+        protectedDiv.classList.add('show');
+        userInfoMenuSpan.innerHTML = `<div class="user-info"><i class="fas fa-user-circle"></i> ${username}<span class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</span></div>`;
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+        showPage('home');
+        applyLanguage(currentLang);
+        initDarkMode();
+        initBgColor();
+        startCountdown();
+        const fades = document.querySelectorAll('.fade-up');
+        const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('appear'); }), { threshold: 0.2 });
+        fades.forEach(el => obs.observe(el));
+    }
+    function showLoginScreen() {
+        loginScreenDiv.style.display = 'flex';
+        protectedDiv.classList.remove('show');
+        sessionStorage.removeItem('class12a4_logged');
+        sessionStorage.removeItem('class12a4_username');
+        usernameField.value = ''; passwordField.value = ''; loginErrorSpan.innerHTML = '';
+        applyLanguage(currentLang);
+        initDarkMode();
+    }
+    function logout() { showLoginScreen(); alert(currentLang === 'vi' ? 'Đã đăng xuất.' : 'Logged out.'); }
+    loginBtn.addEventListener('click', () => {
+        if (passwordField.value.trim() === '1') {
+            const name = usernameField.value.trim() || (currentLang === 'vi' ? 'Thành viên' : 'Member');
+            sessionStorage.setItem('class12a4_logged', 'true');
+            sessionStorage.setItem('class12a4_username', name);
+            showMainContent(name);
+        } else {
+            loginErrorSpan.innerHTML = currentLang === 'vi' ? '❌ Mật khẩu không đúng. Vui lòng nhập "1".' : '❌ Wrong password. Enter "1".';
+        }
+    });
+    passwordField.addEventListener('keypress', e => { if(e.key === 'Enter') loginBtn.click(); });
+    usernameField.addEventListener('keypress', e => { if(e.key === 'Enter') loginBtn.click(); });
+
+    // ========== PAGE NAVIGATION ==========
+    function showPage(pageId) {
+        document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
+        document.getElementById(pageId + 'Page').style.display = 'block';
+        document.querySelectorAll('.menu-tabs a').forEach(a => a.classList.remove('active'));
+        const activeTab = document.querySelector(`.menu-tabs a[data-page="${pageId}"]`);
+        if (activeTab) activeTab.classList.add('active');
+        if (pageId === 'settings') document.getElementById('languageSelect').value = currentLang;
+    }
+    document.querySelectorAll('.menu-tabs a[data-page]').forEach(link => {
+        link.addEventListener('click', (e) => { e.preventDefault(); showPage(link.getAttribute('data-page')); });
+    });
+    document.getElementById('languageSelect').addEventListener('change', (e) => applyLanguage(e.target.value));
+
+    // ========== COUNTDOWN ==========
+    let countdownInterval;
+    function startCountdown() {
+        if (countdownInterval) clearInterval(countdownInterval);
+        updateCountdown();
+        countdownInterval = setInterval(updateCountdown, 1000);
+    }
+    function updateCountdown() {
+        const target = new Date('May 15, 2026 00:00:00').getTime();
+        const now = new Date().getTime();
+        const diff = target - now;
+        if (diff <= 0) {
+            document.getElementById('countdownTimer').innerHTML = currentLang === 'vi' ? "🎓 CHÚC MỪNG TỐT NGHIỆP! 🎓" : "🎓 CONGRATULATIONS! 🎓";
+            return;
+        }
+        const days = Math.floor(diff / (1000*60*60*24));
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        const text = currentLang === 'vi' ? `⏳ Còn ${days} ngày ${hours} giờ ${mins} phút ${secs} giây đến thi tốt nghiệp` : `⏳ ${days}d ${hours}h ${mins}m ${secs}s until graduation exam`;
+        document.getElementById('countdownTimer').innerHTML = text;
+    }
+
+    // ========== MUSIC ==========
+    const music = document.getElementById('bg-music');
+    const playBtn = document.getElementById('playPauseBtn');
+    const volSlider = document.getElementById('volumeSlider');
+    music.volume = 0.5;
+    volSlider.value = 0.5;
+    function toggleMusic() { if(music.paused) music.play().then(() => playBtn.innerHTML = '<i class="fas fa-pause"></i>').catch(e=>{}); else { music.pause(); playBtn.innerHTML = '<i class="fas fa-play"></i>'; } }
+    playBtn.addEventListener('click', toggleMusic);
+    volSlider.addEventListener('input', () => music.volume = volSlider.value);
+    let musicStarted = false;
+    function autoStartMusic() { if(!musicStarted && music.paused) { music.play().then(() => playBtn.innerHTML = '<i class="fas fa-pause"></i>').catch(()=>{}); musicStarted = true; } }
+    document.body.addEventListener('click', autoStartMusic, { once: true });
+    document.body.addEventListener('touchstart', autoStartMusic, { once: true });
+
+    // ========== HEARTS & LIGHTBOX ==========
+    setInterval(() => {
+        const heart = document.createElement('div');
+        heart.innerHTML = ['💖','🌸','💗','✨','💕','🎀'][Math.floor(Math.random()*6)];
+        heart.classList.add('floating-heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.bottom = '-20px';
+        heart.style.fontSize = (Math.random() * 25 + 18) + 'px';
+        heart.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3500);
+    }, 400);
+    document.addEventListener('click', (e) => {
+        if(e.target.closest('.login-card') || e.target.closest('#loginScreen')) return;
+        const big = document.createElement('div');
+        big.innerHTML = '💖';
+        big.style.position = 'fixed';
+        big.style.left = e.clientX - 20 + 'px';
+        big.style.top = e.clientY - 20 + 'px';
+        big.style.fontSize = '44px';
+        big.style.pointerEvents = 'none';
+        big.style.zIndex = '9999';
+        big.style.animation = 'floatUp 0.7s ease-out forwards';
+        document.body.appendChild(big);
+        setTimeout(() => big.remove(), 700);
+    });
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeLight = document.querySelector('.close-lightbox');
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => { lightbox.style.display = 'flex'; lightboxImg.src = item.querySelector('img').src; });
+    });
+    closeLight.addEventListener('click', () => lightbox.style.display = 'none');
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) lightbox.style.display = 'none'; });
+    document.querySelectorAll('img').forEach(img => img.onerror = () => img.src = 'https://via.placeholder.com/400x300?text=12A4');
+
+    checkLogin();
+</script>
+</body>
+</html>
